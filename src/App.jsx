@@ -1,10 +1,10 @@
-import { BrowserRouter, Routes, Route, Navigate, Link, useNavigate } from 'react-router-dom'
+import { Routes, Route, Navigate, Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import Dashboard from './pages/Dashboard'
 import PersonDetail from './pages/PersonDetail'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
-import { getMe, setAuthToken, clearAuthToken, isAuthed } from './lib/api'
+import { getMe, setAuthToken, clearAuthToken } from './lib/api'
 
 function Layout({ children, onLogout, user }) {
   return (
@@ -65,17 +65,15 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
-      <Layout onLogout={handleLogout} user={user}>
-        <Routes>
-          <Route path="/" element={<ProtectedRoute authed={!!user}><Dashboard user={user} /></ProtectedRoute>} />
-          <Route path="/person/:id" element={<ProtectedRoute authed={!!user}><PersonDetail /></ProtectedRoute>} />
-          <Route path="/login" element={<Login onAuthed={setUser} />} />
-          <Route path="/signup" element={<Signup onAuthed={setUser} />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Layout>
-    </BrowserRouter>
+    <Layout onLogout={handleLogout} user={user}>
+      <Routes>
+        <Route path="/" element={<ProtectedRoute authed={!!user}><Dashboard user={user} /></ProtectedRoute>} />
+        <Route path="/person/:id" element={<ProtectedRoute authed={!!user}><PersonDetail /></ProtectedRoute>} />
+        <Route path="/login" element={<Login onAuthed={setUser} />} />
+        <Route path="/signup" element={<Signup onAuthed={setUser} />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Layout>
   )
 }
 
